@@ -68,23 +68,19 @@ class review_classifier():
 if __name__=="__main__":
     
     train_data=pd.read_csv("train.csv")
-    test_data=pd.read_csv("test.csv")
     
     train_text=train_data['TEXT']
-    test_text=test_data['TEXT']
     
     # drop the null data
     train_data=train_data.dropna(axis=0)
     
     train_text=train_data['TEXT']
-    test_text=test_data['TEXT']
     
     train_label=train_data['LABEL']
     train_text,valid_text,train_label,valid_label=train_test_split(train_text,train_label,test_size=0.3,random_state=42)
     
     non_en_train=[]
     non_en_valid=[]
-    non_en_test=[]
     
     #search the index of non-en texts and the thexts shorter than 5
     for i,t_text in enumerate(train_text):
@@ -102,7 +98,7 @@ if __name__=="__main__":
         train_text=[text for i,text in enumerate(train_text) if i not in non_en_train]
         valid_text=[text for i,text in enumerate(valid_text) if i not in non_en_valid]
         train_label=[label for i,label in enumerate(train_label) if i not in non_en_train]
-        #filtered_valid_label=[label for i,label in enumerate(valid_label) if i not in non_en_valid]  
+       
         
     model=review_classifier(preprocessing=args.preprocessing,n_gram=args.ngram)
     tfidf_train=model.encoder_train(train_text,train_label)
