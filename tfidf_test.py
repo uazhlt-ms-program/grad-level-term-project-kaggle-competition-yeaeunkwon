@@ -39,7 +39,7 @@ train_label=train_data['LABEL']
 non_en_train=[]
 non_en_test=[]
     
-#search the index of non-en texts and the thexts shorter than 5
+#search the index of non-en texts and the texts shorter than 5
 for i,t_text in enumerate(train_text):
     nonen_train=re.sub('[^a-zA-Z]','',t_text)
     if len(nonen_train)<5:
@@ -56,7 +56,8 @@ for i,text in enumerate(test_text):
     
     if len(nonen_test)<5:
         non_en_test.append(i)
-    
+        
+# if the non-english texts are not included for training 
 if args.non_en==False:
         
     train_text=[text for i,text in enumerate(train_text) if i not in non_en_train]
@@ -71,11 +72,13 @@ tfidf_valid=model.encoder_predict(test_text)
 model.classifier_train(tfidf_train,train_label)
 pred=model.classifier_predict(tfidf_valid)
 pred=list(pred)
-    
+
+# if the non-english texts are not included for training, all of the texts are labeled as 0
 if args.non_en==False:
     for i in non_en_test:
         pred.insert(i,0)
 
+# save the result to a csv file
 df=pd.DataFrame(columns=['ID','LABEL'])
 df['ID']=test_data['ID']
 df['LABEL']=pred
