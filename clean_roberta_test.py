@@ -22,7 +22,7 @@ parser.add_argument('--seed',type=int,default=42)
 parser.add_argument('--non_en',type=bool,default=False)
 args = parser.parse_args()
 
-
+# to set the seed
 def set_seed(seed):
     random.seed(seed)
     np.random.seed(seed)
@@ -43,7 +43,7 @@ model_name='roberta-base'
 tokenizer=RobertaTokenizer.from_pretrained(model_name)
 model=RobertaForSequenceClassification.from_pretrained(model_name,num_labels=3).to(device)
 
-
+# load the trained model, you can access through the link written in the README.
 MODEL_PATH="/home/labuser/Spring2024/Stat_NLP/Term_project/model/onlyenroberta_29_0.933_1e-07_32.pt"
 model.load_state_dict(torch.load(MODEL_PATH, map_location=device)['model_state_dict'])
     
@@ -54,10 +54,12 @@ for i,v_text in enumerate(test_text):
     if v_text!=v_text:
         non_en_test.append(i)
         continue
+    # the texts shorter than 5 and non-english texts
     nonen_test=re.sub('[^a-zA-Z]','',v_text)
     if len(nonen_test)<5:
         non_en_test.append(i)
-          
+      
+# if the non-english texts are not included for training
 if args.non_en==False:
     test_text=[text for i,text in enumerate(test_text) if i not in non_en_test]
         
@@ -79,7 +81,8 @@ for i,xs in enumerate(test_text):
           
 
 test_results.extend(test_pred.detach().cpu().numpy())
-    
+
+# if the non-english texts are not included for training, all of the texts are labeled as 0
 if args.non_en==False:
     for i in non_en_test:
             test_results.insert(i,0)
