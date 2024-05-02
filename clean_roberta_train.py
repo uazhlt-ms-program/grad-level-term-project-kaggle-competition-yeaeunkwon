@@ -158,7 +158,7 @@ if __name__=="__main__":
     non_en_train=[]
     non_en_valid=[]
 
-    #search the index of non-en texts
+    #search the index of non-en texts and the texts shorter than 5
     for i,t_text in enumerate(train_text):
         nonen_train=re.sub('[^a-zA-Z]','',t_text)
         if len(nonen_train)<5:
