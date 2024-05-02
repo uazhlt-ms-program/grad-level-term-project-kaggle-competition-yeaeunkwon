@@ -92,7 +92,8 @@ if __name__=="__main__":
         nonen_valid=re.sub('[^a-zA-Z]','',v_text)
         if len(nonen_valid)<5:
             non_en_valid.append(i)
-    
+
+    # if the non-english texts are not included for training
     if args.non_en==False:
         
         train_text=[text for i,text in enumerate(train_text) if i not in non_en_train]
@@ -107,7 +108,8 @@ if __name__=="__main__":
     model.classifier_train(tfidf_train,train_label)
     pred=model.classifier_predict(tfidf_valid)
     pred=list(pred)
-    
+
+    # if the non-english texts are not included for training, all of the texts are labeled as 0
     if args.non_en==False:
         for i in non_en_valid:
             pred.insert(i,0)
