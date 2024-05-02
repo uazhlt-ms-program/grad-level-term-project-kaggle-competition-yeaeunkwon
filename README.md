@@ -1,6 +1,6 @@
 # Model
 - the trained model couldn't be uploaded in the repository due to its large size
-- this is the link of the model I used for prediction : (https://drive.google.com/file/d/1iXwQnDqlM6lGxtAmPpozfqTSPz0ZIe4D/view?usp=drive_link)
+- this is the link of the model I trained and used for prediction : (https://drive.google.com/file/d/1iXwQnDqlM6lGxtAmPpozfqTSPz0ZIe4D/view?usp=drive_link)
 
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/ml3o3YLw)
 # Task
