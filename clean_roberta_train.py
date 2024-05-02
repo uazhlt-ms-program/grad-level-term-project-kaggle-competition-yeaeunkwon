@@ -26,6 +26,7 @@ wandb.init(project="StatNLP")
 wandb.run.name=f"onlyenRoberta_{args.lr}_{args.batch_size}"
 wandb.config.update(args)
 
+# to set the seed
 def set_seed(seed):
     random.seed(seed)
     np.random.seed(seed)
@@ -35,7 +36,14 @@ def set_seed(seed):
         torch.cuda.manual_seed_all(seed)
         
 def train_fn(train_dataloader,device,model,optim):
-    
+    """
+    this is the function for the training for a epoch
+    train_dataloader :  train dataloader
+    device :  the device for training, cuda
+    model :  the Roberta model
+    optim : the optimizer to train the model
+    """
+  
     lossK=0.0
     train_preds=[]
     train_true=[]
@@ -66,6 +74,14 @@ def train_fn(train_dataloader,device,model,optim):
     return train_loss,train_f1
 
 def prediction(valid_dataloader,device,model,true_label,non_en_valid):
+    """
+    this is the function for the prediction for a epoch
+    valid_dataloader :  the dataloader of the valid dataset
+    device :  the device for training, cuda
+    model :  the Roberta model
+    true_label : the list of true labels of valid datset
+    non_en_valid :  the indices of the non-english texts in the valid dataset
+    """
     model.eval()
     valid_results=[]
     for i,xs in enumerate(valid_dataloader):
@@ -77,7 +93,8 @@ def prediction(valid_dataloader,device,model,true_label,non_en_valid):
           
 
         valid_results.extend(valid_pred.detach().cpu().numpy())
-        
+      
+    # if the non-english texts are not included for training, all of the texts are labeled as 0
     for i in non_en_valid:
         valid_results.insert(i,0)
     valid_f1=f1_score(true_label, valid_results,average="macro",zero_division=0)
@@ -154,7 +171,8 @@ if __name__=="__main__":
             non_en_valid.append(i)
             
     valid_true_label=valid_label   
-          
+
+    # if the non-english texts are not included for training
     if args.non_en==False:
         
           
